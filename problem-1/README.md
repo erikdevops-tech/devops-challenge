@@ -19,7 +19,11 @@ curl -s "https://example.com/api/12364"
 
 Cli running
 ```
-cat transaction-log.txt | jq -c 'select(.symbol == "TSLA", .side == "sell") |  .order_id'| xargs -I{} curl -s "https://example.com/api/{}" >>
-./output.txt
+cat transaction-log.txt | jq -c 'select(.symbol == "TSLA", .side == "sell") |  .order_id'| xargs -I{} curl -s "https://example.com/api/{}" >> ./output.txt
 ```
 
+
+Option merging all orderids inside one curl with concat ","
+``` 
+cat transaction-log.txt | jq -c 'select(.symbol == "TSLA" and .side == "sell") | .order_id' | tr -d '"' | paste -sd "," - | xargs -I{} curl -s "https://example.com/api/{}" >> ./output.txt
+```
