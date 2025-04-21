@@ -56,6 +56,10 @@ Which those high perfomance like this p99 < 100ms, prefer using some low level/h
 
 ### DBS
 For contraint p99 < 100ms, I'm not 100% but trading history query can be problem, but with scope of 500 RPS and save costing, add replica here with optimize query and indexing, can help, in case it's scalable, we can reconsider, for choosing the other database for storing timeseries,... 
-We also apply some caching layer here (Redis) with ElastiCache for caching and returing some infor like order/ Sessions which can cache and quickly return.
+We also apply some caching layer here (Redis) with ElastiCache for caching and returing some infor like order/ Sessions which can cache and quickly return, with setting ttl 30-60s or the other validating cache if we has. Remember for update cache when update data from Primary DB (PSQL).
+
 ### Message Queue( Suggestion but not including with current scope)
 Consider apply high through put Message Queue like Kafka in this system for making system more reliability like buffering during traffic spikes in high traffic, or we can retry the message and dedoupling scaling the workers/consumers with non-blocking.
+### CLoud CDN (Apply when we storing a lot of contents in FE)
+We can consider using cloudfront fror caching contetns in Frontend side which will otimize the UX
+
